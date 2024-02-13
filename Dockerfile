@@ -1,14 +1,14 @@
-# Use the official Ubuntu image as a base
-FROM ubuntu:20.04
+# Use the official Alpine image as a base
+FROM alpine:latest
 
 # Update package lists and install Squid
-RUN apt-get update \
-    && DEBIAN_FRONTEND=noninteractive apt-get install -y squid \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+RUN apk --update add squid && rm -rf /var/cache/apk/*
 
-#copy squid.conf file
-COPY squid.conf /etc/squid/
+# Copy squid.conf file
+COPY squid.conf /etc/squid/squid.conf
+
+#make spool folder for squid
+RUN mkdir /var/spool/squid
 # Expose Squid port
 EXPOSE 3128
 
